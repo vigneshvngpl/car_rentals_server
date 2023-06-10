@@ -71,5 +71,15 @@ app.get("/reserve/:id", (req, res) => {
     logic.getvehicle(req.params.id).then(data => {
         res.status(data.statusCode).json(data)
     })
+
 })
 
+//transaction api
+
+app.get("/transactions/:id", (req, res) => {
+
+    logic.transaction(req.params.id).then(data => {
+        res.status(data.statusCode).json(data)
+    })
+
+})

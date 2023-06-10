@@ -88,7 +88,7 @@ viewallcars = () => {
     })
 }
 getvehicle = (id) => {
-    return db.Vehicle.findOne({carid:id }).then(result => {
+    return db.Vehicle.findOne({ carid: id }).then(result => {
         if (result) {
             return {
                 message: result,
@@ -106,7 +106,28 @@ getvehicle = (id) => {
     })
 }
 
+transaction = (id) => {
+    return db.Vehicle.findOne({ carid: id }).then(result => {
+        if (result) {
+            return {
+                message: result,
+                status: true,
+                statusCode: 200
+            }
+
+        }
+        else {
+            return {
+                message: "couldnt find the vehicle based on id",
+                status: false,
+                statusCode: 404
+            }
+
+        }
+    })
+}
+
 
 module.exports = {
-    register, login, viewallcars,getvehicle
+    register, login, viewallcars, getvehicle, transaction
 }
