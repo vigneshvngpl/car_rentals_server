@@ -69,6 +69,44 @@ login = (email, psw) => {
     })
 }
 
+viewallcars = () => {
+    return db.Vehicle.find().then(result => {
+        if (result) {
+            return {
+                message: result,
+                status: true,
+                statusCode: 200
+            }
+        }
+        else {
+            return {
+                message: "error found",
+                status: false,
+                statusCode: 404
+            }
+        }
+    })
+}
+getvehicle = (id) => {
+    return db.Vehicle.findOne({carid:id }).then(result => {
+        if (result) {
+            return {
+                message: result,
+                status: true,
+                statusCode: 200
+            }
+        }
+        else {
+            return {
+                message: "Couldnt find the vehicle based on id",
+                status: false,
+                statusCode: 404
+            }
+        }
+    })
+}
+
+
 module.exports = {
-    register, login
+    register, login, viewallcars,getvehicle
 }
