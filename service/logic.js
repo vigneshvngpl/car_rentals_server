@@ -51,6 +51,7 @@ login = (email, psw) => {
                 status: true,
                 statusCode: 200,
                 currentUser: user.nme,
+                currentemail: user.email
                 // token
 
             }
@@ -127,7 +128,67 @@ transaction = (id) => {
     })
 }
 
+//checkout
+
+checkout = (id, dates, email, fromdate, todate, totalprice, carname, carimage) => {
+    return db.Vehicle.findOne({ carid: id }).then(result => {
+        if (result) {
+
+            return db.User.findOne({ email }).then(user => {
+                if (user) {
+
+                    result.booking.push(dates.split(","))
+                    result.save()
+                    user.orders.push(
+                        {
+                            fromdte: fromdate,
+                            todte: todate,
+                            tprice: totalprice,
+                            carnme: carname,
+                            carimg: carimage
+                        }
+
+                    )
+                    user.save()
+
+                    return {
+                        message: "success",
+                        status: true,
+                        statusCode: 200
+                    }
+
+
+                } else {
+
+                    return {
+                        message: "user not found",
+                        status: false,
+                        statusCode: 404
+                    }
+
+                }
+            })
+
+
+
+
+        }
+
+        else {
+            return {
+                message: "car not found",
+                status: false,
+                statusCode: 404
+            }
+        }
+
+    })
+}
+
+checkdate=(date)=>{
+    return db.Vehicle.booking
+}
 
 module.exports = {
-    register, login, viewallcars, getvehicle, transaction
+    register, login, viewallcars, getvehicle, transaction, checkout
 }

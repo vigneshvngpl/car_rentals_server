@@ -10,7 +10,7 @@ const User = mongoose.model("User",
     nme: String,
     phone: Number,
     psw: String,
-    orders: Array
+    orders: []
   })
 
 const Vehicle = mongoose.model("Vehicle",
@@ -25,7 +25,7 @@ const Vehicle = mongoose.model("Vehicle",
     capacity: Number,
     mileage: Number,
     condition: String,
-    booking: Array
+    booking: []
 
   })
 

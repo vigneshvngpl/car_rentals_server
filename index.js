@@ -83,3 +83,16 @@ app.get("/transactions/:id", (req, res) => {
     })
 
 })
+
+//checkout Api
+
+app.post("/checkout",(req,res)=>{
+
+    logic.checkout(req.body.id,req.body.dates,req.body.email,req.body.fromdate,req.body.todate,req.body.totalprice,req.body.carname,req.body.carimage).then(data=>{
+        res.status(data.statusCode).json(data)
+    })
+})
+
+app.get("/checkdate",(req,res)=>{
+    
+})
