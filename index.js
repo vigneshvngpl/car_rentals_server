@@ -74,11 +74,18 @@ app.get("/reserve/:id", (req, res) => {
 
 })
 
+//ordder history
+app.get("/orderhistory/:id", (req, res) => {
+    logic.orderhistory(req.params.id).then(data => {
+        res.status(data.statusCode).json(data)
+    })
+})
+
 //transaction api
 
-app.get("/transactions/:id", (req, res) => {
+app.post("/transactions", (req, res) => {
 
-    logic.transaction(req.params.id).then(data => {
+    logic.transaction(req.body.id, req.body.date).then(data => {
         res.status(data.statusCode).json(data)
     })
 
@@ -86,13 +93,42 @@ app.get("/transactions/:id", (req, res) => {
 
 //checkout Api
 
-app.post("/checkout",(req,res)=>{
+app.post("/checkout", (req, res) => {
 
-    logic.checkout(req.body.id,req.body.dates,req.body.email,req.body.fromdate,req.body.todate,req.body.totalprice,req.body.carname,req.body.carimage).then(data=>{
+    logic.checkout(req.body.id, req.body.dates, req.body.email, req.body.fromdate, req.body.todate, req.body.totalprice, req.body.carname, req.body.carimage, req.body.transmission, req.body.fuel, req.body.capacity, req.body.condition).then(data => {
         res.status(data.statusCode).json(data)
     })
 })
 
-app.get("/checkdate",(req,res)=>{
-    
+app.post("/checkdate", (req, res) => {
+    logic.checkdate(req.body.id, req.body.date).then(data => {
+        res.status(data.statusCode).json(data)
+    })
+
 })
+
+app.post("/checkdate", (req, res) => {
+    logic.checkdat(req.body.date).then(data => {
+        res.status(data.statusCode).json(data)
+    })
+})
+
+
+//admin login
+
+app.post("/adminlogin", (req, res) => {
+    logic.adminlogin(req.body.user, req.body.psw).then(result => {
+        res.status(result.statusCode).json(result)
+    })
+
+
+
+})
+
+//vehicle add
+app.post("/addvehicle", (req, res) => {
+    logic.vehicleadd(req.body.carid, req.body.carnme, req.body.model, req.body.price, req.body.carimge, req.body.fuel, req.body.transmission, req.body.capacity, req.body.mileage, req.body.condition).then(result => {
+        res.status(result.statusCode).json(result)
+    })
+})
+

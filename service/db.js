@@ -29,8 +29,15 @@ const Vehicle = mongoose.model("Vehicle",
 
   })
 
+  const Admin = mongoose.model("Admin",
+  {
+    email: String,
+     psw: String
+    
+  })
+
 module.exports = {
-  User, Vehicle
+  User, Vehicle,Admin
 }
 
 

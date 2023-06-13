@@ -107,15 +107,37 @@ getvehicle = (id) => {
     })
 }
 
-transaction = (id) => {
+transaction = (id, date) => {
     return db.Vehicle.findOne({ carid: id }).then(result => {
         if (result) {
+
+            // const bookingDates = result.booking;
+
+            // const dateArray = date[0].split(',');
+
+            // const foundDate = dateArray.some(dateString => bookingDates.includes(dateString));
+
+
+            //     if (foundDate) {
+            //         return {
+            //             message: "the date is reserved",
+            //             status: false,
+            //             statusCode: 404
+            //         }
+            //     }
+            //     else {
+            //         return {
+            //             message: "notfound",
+            //             status: true,
+            //             statusCode: 200
+            //         }
+            //     }
+
             return {
-                message: result,
+                message: "successful",
                 status: true,
                 statusCode: 200
             }
-
         }
         else {
             return {
@@ -130,7 +152,7 @@ transaction = (id) => {
 
 //checkout
 
-checkout = (id, dates, email, fromdate, todate, totalprice, carname, carimage) => {
+checkout = (id, dates, email, fromdate, todate, totalprice, carname, carimage,transmission,fuel,capacity,condition) => {
     return db.Vehicle.findOne({ carid: id }).then(result => {
         if (result) {
 
@@ -145,8 +167,13 @@ checkout = (id, dates, email, fromdate, todate, totalprice, carname, carimage) =
                             todte: todate,
                             tprice: totalprice,
                             carnme: carname,
-                            carimg: carimage
+                            carimg: carimage,
+                            transmission: transmission,
+                            fuel: fuel,
+                            capacity: capacity,
+                            condition: condition
                         }
+
 
                     )
                     user.save()
@@ -185,10 +212,138 @@ checkout = (id, dates, email, fromdate, todate, totalprice, carname, carimage) =
     })
 }
 
-checkdate=(date)=>{
-    return db.Vehicle.booking
+checkdate = (id, date) => {
+    return db.Vehicle.findOne({ carid: id }).then(result => {
+        if (result) {
+
+
+
+
+            const flattenedBooking = result.booking.flat();
+            const foundDate = date.find(date => flattenedBooking.includes(date));
+
+            if (foundDate) {
+                return {
+                    message: "found",
+                    status: true,
+                    statusCode: 200
+                }
+            }
+            else {
+                return {
+                    message: "notfound",
+                    status: false,
+                    statusCode: 404
+                }
+            }
+
+
+        }
+        else {
+            return {
+                message: "car id not found",
+                status: false,
+                statusCode: 404
+            }
+        }
+    })
 }
 
+orderhistory = (id) => {
+    return db.User.findOne({ email: id }).then(result => {
+        if (result) {
+            return {
+                message: result.orders,
+                status: true,
+                statusCode: 200
+            }
+
+        }
+        else {
+            return {
+                message: "no user found",
+                status: false,
+                statusCode: 404
+            }
+        }
+    })
+}
+
+//admin login logic
+
+
+adminlogin = (user, psw) => {
+    return db.Admin.findOne({ user, psw }).then(result => {
+
+        if (result) {
+
+
+            return {
+                message: "welcome back",
+                status: true,
+                statusCode: 200,
+                currentAdmin: result.user
+                
+                // token
+
+            }
+        }
+        else {
+            return {
+                message: "email or password incorrect",
+                status: false,
+                statusCode: 404
+
+
+            }
+        }
+
+
+    })
+}
+
+//vehicle add
+vehicleadd = ( carid,carnme,model,price,carimge,fuel,transmission,capacity,mileage,condition) => {
+
+    return db.Vehicle.findOne({ carid:carid }).then(Vehicle => {
+        if (Vehicle) {
+
+            return {
+                message: "carid already in use ",
+                status: false,
+                statusCode: 404
+            }
+
+        }
+        else {
+            Vehicle = new db.Vehicle({
+                carid,
+                carnme,
+                model,
+                price,
+                carimge,
+                fuel,
+                transmission,
+                capacity,
+                mileage,
+                condition,
+                booking:[]
+
+            })
+
+            Vehicle.save()
+            return {
+                message: "registration Successful",
+                status: true,
+                statusCode: 200
+            }
+        }
+    })
+}
+
+
+
+
 module.exports = {
-    register, login, viewallcars, getvehicle, transaction, checkout
+    register, login, viewallcars, getvehicle, transaction, checkout, checkdate, orderhistory,adminlogin,vehicleadd
 }
