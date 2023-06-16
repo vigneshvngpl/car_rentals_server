@@ -132,3 +132,27 @@ app.post("/addvehicle", (req, res) => {
     })
 })
 
+
+//editapi
+
+app.get("/editsee/:id", (req, res) => {
+    logic.getvehicle(req.params.id).then(data => {
+        res.status(data.statusCode).json(data)
+    })
+
+})
+
+app.post("/editvehicle",(req,res)=>{
+    logic.vehicleedit(req.body.carid, req.body.carnme, req.body.model, req.body.price, req.body.carimge, req.body.fuel, req.body.transmission, req.body.capacity, req.body.mileage, req.body.condition).then(result=>{
+        res.status(result.statusCode).json(result)
+    })
+})
+
+//delete vehicle
+
+app.delete("/vehicledelete/:carid", (req, res) => {
+    logic.vehicledelete(req.params.carid).then(data => {
+        res.status(data.statusCode).json(data)
+    })
+})
+

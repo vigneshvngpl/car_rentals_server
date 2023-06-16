@@ -152,7 +152,7 @@ transaction = (id, date) => {
 
 //checkout
 
-checkout = (id, dates, email, fromdate, todate, totalprice, carname, carimage,transmission,fuel,capacity,condition) => {
+checkout = (id, dates, email, fromdate, todate, totalprice, carname, carimage, transmission, fuel, capacity, condition) => {
     return db.Vehicle.findOne({ carid: id }).then(result => {
         if (result) {
 
@@ -283,7 +283,7 @@ adminlogin = (user, psw) => {
                 status: true,
                 statusCode: 200,
                 currentAdmin: result.user
-                
+
                 // token
 
             }
@@ -303,9 +303,9 @@ adminlogin = (user, psw) => {
 }
 
 //vehicle add
-vehicleadd = ( carid,carnme,model,price,carimge,fuel,transmission,capacity,mileage,condition) => {
+vehicleadd = (carid, carnme, model, price, carimge, fuel, transmission, capacity, mileage, condition) => {
 
-    return db.Vehicle.findOne({ carid:carid }).then(Vehicle => {
+    return db.Vehicle.findOne({ carid: carid }).then(Vehicle => {
         if (Vehicle) {
 
             return {
@@ -327,7 +327,7 @@ vehicleadd = ( carid,carnme,model,price,carimge,fuel,transmission,capacity,milea
                 capacity,
                 mileage,
                 condition,
-                booking:[]
+                booking: []
 
             })
 
@@ -341,9 +341,66 @@ vehicleadd = ( carid,carnme,model,price,carimge,fuel,transmission,capacity,milea
     })
 }
 
+vehicleedit = (carid, carnme, model, price, carimge, fuel, transmission, capacity, mileage, condition) => {
+    return db.Vehicle.findOne({ carid: carid }).then(Vehicle => {
+
+        if (Vehicle) {
+            Vehicle.carnme = carnme
+            Vehicle.model = model
+            Vehicle.price = price
+            Vehicle.carimge = carimge
+            Vehicle.fuel = fuel
+            Vehicle.transmission = transmission
+            Vehicle.capacity = capacity
+            Vehicle.mileage = mileage
+            Vehicle.condition = condition
+
+            Vehicle.save()
+
+            return {
+                message: "successfully edited",
+                status: true,
+                statusCode: 200
+            }
+
+        }
+        else {
+            return {
+                message: "car id not find",
+                status: false,
+                statusCode: 404
+            }
+        }
+
+
+    })
+}
+
+vehicledelete = (carid) => {
+
+    return db.Vehicle.deleteOne({ carid }).then(result => {
+        if (result) {
+            return {
+                message: "data deleted",
+                status: true,
+                statusCode: 200
+            }
+        }
+        else{
+            return {
+                message: "car id not found",
+                status: false,
+                statusCode: 404
+            }
+
+        }
+    })
+
+}
+
 
 
 
 module.exports = {
-    register, login, viewallcars, getvehicle, transaction, checkout, checkdate, orderhistory,adminlogin,vehicleadd
+    register, login, viewallcars, getvehicle, transaction, checkout, checkdate, orderhistory, adminlogin, vehicleadd, vehicleedit,vehicledelete
 }
