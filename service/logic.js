@@ -111,11 +111,21 @@ transaction = (id, date) => {
     return db.Vehicle.findOne({ carid: id }).then(result => {
         if (result) {
 
-            // const bookingDates = result.booking;
+            // bookingDates = result.booking;
 
-            // const dateArray = date[0].split(',');
+            // dateArray = date.map(dates => ({
+            //     dateee : date
+            // }))
 
-            // const foundDate = dateArray.some(dateString => bookingDates.includes(dateString));
+            // dateArray = result.reduce((result, post) => {
+            //     dates = post.booking.map(userDates => ({
+            //         datee : [userDates]
+            //     }));
+            //     return result.concat(dates);
+            // },[]);
+
+
+            // foundDate = dateArray.some(dateString => bookingDates.includes(dateString));
 
 
             //     if (foundDate) {
@@ -129,7 +139,8 @@ transaction = (id, date) => {
             //         return {
             //             message: "notfound",
             //             status: true,
-            //             statusCode: 200
+            //             statusCode: 200,
+            //             data : dateArray
             //         }
             //     }
 
@@ -151,7 +162,7 @@ transaction = (id, date) => {
 }
 
 //checkout
-
+// , dates
 checkout = (id, dates, email, fromdate, todate, totalprice, carname, carimage, transmission, fuel, capacity, condition) => {
     return db.Vehicle.findOne({ carid: id }).then(result => {
         if (result) {
@@ -179,7 +190,7 @@ checkout = (id, dates, email, fromdate, todate, totalprice, carname, carimage, t
                     user.save()
 
                     return {
-                        message: "success",
+                        message: "Success",
                         status: true,
                         statusCode: 200
                     }
@@ -213,11 +224,9 @@ checkout = (id, dates, email, fromdate, todate, totalprice, carname, carimage, t
 }
 
 checkdate = (id, date) => {
+
     return db.Vehicle.findOne({ carid: id }).then(result => {
         if (result) {
-
-
-
 
             const flattenedBooking = result.booking.flat();
             const foundDate = date.find(date => flattenedBooking.includes(date));

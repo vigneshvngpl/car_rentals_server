@@ -94,11 +94,18 @@ app.post("/transactions", (req, res) => {
 //checkout Api
 
 app.post("/checkout", (req, res) => {
-
     logic.checkout(req.body.id, req.body.dates, req.body.email, req.body.fromdate, req.body.todate, req.body.totalprice, req.body.carname, req.body.carimage, req.body.transmission, req.body.fuel, req.body.capacity, req.body.condition).then(data => {
         res.status(data.statusCode).json(data)
     })
 })
+
+// app.post("/checkout", (req, res) => {
+//     logic.checkout(req.body.id, req.body.email).then(data => {
+//         res.status(data.statusCode).json(data)
+//     })
+// })
+
+
 
 app.post("/checkdate", (req, res) => {
     logic.checkdate(req.body.id, req.body.date).then(data => {
